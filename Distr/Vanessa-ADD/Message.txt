@@ -1,0 +1,43 @@
+﻿Тесты Дымовые и Сценарные
+
+1) OneScript v1.2.0 или 1.1.1 - ссылка для 1.1.1
+http://oscript.io/downloads/latest/OneScript-1.1.1-setup.exe
+или для
+1.2.0 http://oscript.io/downloads/latest/OneScript-1.2.0-x86.exe
+
+2) Vanessa-ADD v6.4.0
+  - (лучший способ, но нужен Интернет для установки) или установить через OneScript, если он установлен - команда opm install add
+  - скачать напрямую через релизы Гитхаба https://github.com/silverbulleters/add/releases/download/v6.4.0/add-6.4.0.zip
+
+3) приложение Vanessa-runner v1.9.0 (для OneScript)
+  - установить через OneScript, если он установлен - команда opm install vanessa-runner
+    - нужен Интернет для установки
+
+4) Visual Studio Code (от Майкрософт)
+  - (не путать с Visual Studio)
+  - https://code.visualstudio.com/download
+
+5) 2 расширения для Visual Studio Code
+  - Snippets and Syntax Highlight for Gherkin (Cucumber)
+  - Gherkin step autocomplete
+
+Источник: https://github.com/vanessa-opensource
+
+
+
+То что выше и остальное тут:
+U:\Хуббуллин Дмитрий
+
+
+
+Сама технология с описаниями:
+https://github.com/silverbulleters/add/tree/master/tests/smoke
+
+
+
+С уважением,
+Хуббуллин Дмитрий
+
+тел: (495) 771-64-22, вн. 203
+e-mail: Hubbullin_D@it-capital.ru
+www: www.it-capital.ru
