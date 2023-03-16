@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="https://fonts.googleapis.com/css?family=Poiret+One&amp;subset=latin,cyrillic" rel="stylesheet" type="text/css">
+<link rel="stylesheet" type="text/css" href="demo-tables.css">
+<link rel="stylesheet" type="text/css" href="single.css">
+  <style>
+   table { 
+    	width: 70%; /* Ширина таблицы */
+	font-family: "Lucida Sans Unicode", "Lucida Grande", Sans-Serif;
+	font-size: 14px;
+	text-align: center;
+	margin: 10px auto;
+	color: #4C596C;
+	opacity: 0.88;
+   }
+   table tr:nth-child(1n) {
+	background: #f5faff; /* Цвет фона */
+   } 
+   table tr:nth-child(2n) {
+	background: #D8E6F3; /* Цвет фона */
+   } 
+   table tr:nth-child(1) {
+	background: #AFCDE7; /* Цвет фона */
+   } 
+   table td:nth-child(1) {
+	text-align: left;
+	padding: 7px 10px;
+   }
+   .link { 
+        color: #E73C49;
+   }
+  </style>
+</head>
+
+<body onload="loadDoc();">
+
+<div>
+<h1>Монитор активности VPN трафика</h1>
+<h3 id="Date">Дата обновления:</h3>
+<button style="visibility:hidden" type="button" onclick="loadDoc()">Обновить</button>
+
+<table id="content" class="color" width="70%">
+</table>
+</div>
+
+<div id="log">
+<h3 id="h5">Соединение с сервером app1 установлено...</h3>
+</div>
+
+<script>
+function loadDoc() {
+	document.getElementById("h5").innerHTML = "Получение данных с сервера app1...";
+
+	var xhttp = new XMLHttpRequest();
+	xhttp.onreadystatechange = function() {
+
+  if (this.readyState == 4 && this.status == 200) {
+    	var myObj = JSON.parse(this.responseText);
+	document.getElementById("Date").innerHTML = "Дата обновления: " + myObj.Date;
+
+	if (myObj.Log == "")
+		document.getElementById("h5").innerHTML = "Соединение с сервером app1 успешно установлено...";
+	else
+		document.getElementById("h5").innerHTML = "Ошибка: " + myObj.Log;
+
+    	var arr = myObj.Data;
+	var string = "<tr><td>Пользователь</td><td>Время замера</td><td>Получено</td><td>Отправлено</td><td>Подключен</td><td>Статус</td></tr>";
+	for (i in arr) {
+
+		var status = arr[i].Статус;
+		var statusText = "";
+		var color = "";
+		if (status == 0) {
+		  statusText = "Отключен";
+		  color = "##0E0B0B";
+		} else if (status == 1) {
+		  statusText = "Отсутствует";
+		  color = "#DF4625";
+		} else if (status == 2) {
+		  statusText = "Отошел";
+		  color = "#FFC300";
+		} else if (status == 3) {
+		  statusText = "Активен";
+		  color = "#2AC220";
+		}
+		string = string +"<tr><td><div style='font-weight: bold;'>" + arr[i].Пользователь + 
+				 "</div></td><td>" + arr[i].ВремяЗамера + 
+				 "</td><td> " + arr[i].Получено + 
+				 "</td><td> " + arr[i].Отправлено + 
+				 "</td><td> " + arr[i].Подключен + 
+				 "</td><td><div style='color:" + color + ";font-weight: bold;'>" + statusText + 
+				"</div></td></tr>";
+	};
+	document.getElementById("content").innerHTML = string;
+   }
+ };
+
+	xhttp.open("GET", "http://app1/Service/hs/RSHB_Interchange/Monitor/TrafficActivity", true);
+	xhttp.send();
+	xhttp = null;
+
+	setTimeout(loadDoc, 100000);
+}
+</script>
+
+</body>
+</html>

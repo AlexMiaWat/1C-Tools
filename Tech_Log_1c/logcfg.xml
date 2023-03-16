@@ -1,0 +1,59 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<config xmlns="http://v8.1c.ru/v8/tech-log">
+ 
+ <dump create="false"/>
+
+ <log location="D:\Exchange\TechLog\Now\" history="96">
+  <event>
+   <eq property="name" value="call"/>
+   <gt property="Durationus" value="10000000"/>
+  </event>
+
+  <event>
+   <eq property="name" value="dbmssql"/>
+   <gt property="Durationus" value="10000000"/>
+  </event> 
+
+  <property name="all"/>
+ </log>
+
+ <log location="D:\Exchange\TechLog\DU_AVC\" history="96">
+  
+  <!-- сохраняем длительные запросы более 7 сек//-->
+  <event>
+   <eq property="name" value="call"/>
+   <ge property="Durationus" value="10000000"/>
+   <eq property="p:processName" value="AVC_DU"/>
+  </event>
+  <event>
+   <eq property="Name" value="SDBL"/>
+   <ge property="Durationus" value="10000000"/>
+   <eq property="p:processName" value="AVC_DU"/>
+  </event>
+  <event>
+   <eq property="name" value="dbmssql"/>
+   <ge property="Durationus" value="10000000"/>
+   <eq property="p:processName" value="AVC_DU"/>
+  </event> 
+
+  <event>
+   <eq property="name" value="EXCP"/>
+   <like property="p:processName" value="AVC_DU%"/>
+  </event>
+
+  <event>
+   <eq property="name" value="QERR"/>
+   <like property="p:processName" value="AVC_DU%"/>
+  </event>
+
+  <!-- system – системные события механизмов платформы
+  <event>
+   <eq property="name" value="system"/>
+   <eq property="p:processName" value="AVC_DU%"/>
+  </event>
+  -->
+
+  <property name="all"/>
+ </log>
+
+</config>

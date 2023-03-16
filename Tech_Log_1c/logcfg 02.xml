@@ -1,0 +1,111 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<config xmlns="http://v8.1c.ru/v8/tech-log">
+ 
+ <dump create="false"/>
+
+ <!-- Персональная выборка //-->
+ <log location="D:\Exchange\TECH_LOG_1C\Personal\" history="24">
+ 
+  <event>
+   <eq property="name" value="dbmssql"/>
+   <like property="sql" value="%dbo._Reference176X1 T6%"/>
+   <eq property="p:processName" value="OFG_Avancore_DU"/>
+  </event>
+
+  <property name="all"/>
+ </log>
+
+ <!-- сохраняем длительные запросы более 15 сек//--> 
+ <log location="D:\Exchange\TECH_LOG_1C\Now\" history="120">
+  <event>
+   <eq property="name" value="call"/>
+   <gt property="Durationus" value="15000000"/>
+  </event>
+
+  <event>
+   <eq property="name" value="dbmssql"/>
+   <gt property="Durationus" value="15000000"/>
+  </event> 
+
+  <property name="all"/>
+ </log>
+
+ <log location="D:\Exchange\TECH_LOG_1C\DU\" history="96">
+  
+  <!-- сохраняем длительные запросы более 7 сек//-->
+  <event>
+   <eq property="name" value="call"/>
+   <ge property="Durationus" value="7000000"/>
+   <eq property="p:processName" value="OFG_Avancore_DU"/>
+  </event>
+  <event>
+   <eq property="Name" value="SDBL"/>
+   <ge property="Durationus" value="7000000"/>
+   <eq property="p:processName" value="OFG_Avancore_DU"/>
+  </event>
+  <event>
+   <eq property="name" value="dbmssql"/>
+   <ge property="Durationus" value="7000000"/>
+   <eq property="p:processName" value="OFG_Avancore_DU"/>
+  </event> 
+
+  <event>
+   <eq property="name" value="EXCP"/>
+   <like property="p:processName" value="OFG_Avancore_DU%"/>
+  </event>
+
+  <event>
+   <eq property="name" value="QERR"/>
+   <like property="p:processName" value="OFG_Avancore_DU%"/>
+  </event>
+
+  <!-- system – системные события механизмов платформы
+  <event>
+   <eq property="name" value="system"/>
+   <eq property="p:processName" value="OFG_Avancore_DU%"/>
+  </event>
+  -->
+
+  <property name="all"/>
+ </log>
+
+<log location="D:\Exchange\TECH_LOG_1C\PIF3\" history="96">
+  
+  <!-- сохраняем длительные запросы более 7 сек//-->
+  <event>
+   <eq property="name" value="call"/>
+   <ge property="Durationus" value="7000000"/>
+   <eq property="p:processName" value="OFG_Avancore_PIF_3"/>
+  </event>
+  <event>
+   <eq property="Name" value="SDBL"/>
+   <ge property="Durationus" value="7000000"/>
+   <eq property="p:processName" value="OFG_Avancore_PIF_3"/>
+  </event>
+  <event>
+   <eq property="name" value="dbmssql"/>
+   <ge property="Durationus" value="7000000"/>
+   <eq property="p:processName" value="OFG_Avancore_PIF_3"/>
+  </event> 
+
+  <event>
+   <eq property="name" value="EXCP"/>
+   <like property="p:processName" value="OFG_Avancore_PIF_3%"/>
+  </event>
+
+  <event>
+   <eq property="name" value="QERR"/>
+   <like property="p:processName" value="OFG_Avancore_PIF_3%"/>
+  </event>
+
+  <!-- system – системные события механизмов платформы
+  <event>
+   <eq property="name" value="system"/>
+   <eq property="p:processName" value="OFG_Avancore_PIF_3%"/>
+  </event>
+  -->
+
+  <property name="all"/>
+ </log>
+
+</config>

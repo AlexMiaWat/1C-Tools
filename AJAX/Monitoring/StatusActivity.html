@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="https://fonts.googleapis.com/css?family=Poiret+One&amp;subset=latin,cyrillic" rel="stylesheet" type="text/css">
+<link rel="stylesheet" type="text/css" href="demo-tables.css">
+<link rel="stylesheet" type="text/css" href="single.css">
+  <style>
+   table { 
+    	width: 50%; /* Ширина таблицы */
+	font-family: "Lucida Sans Unicode", "Lucida Grande", Sans-Serif;
+	font-size: 14px;
+	text-align: center;
+	margin: 10px auto;
+	color: #4C596C;
+	opacity: 0.88;
+   }
+   table tr:nth-child(1n) {
+	background: #f5faff; /* Цвет фона */
+   } 
+   table tr:nth-child(2n) {
+	background: #D8E6F3; /* Цвет фона */
+   } 
+   table tr:nth-child(1) {
+	background: #AFCDE7; /* Цвет фона */
+   } 
+   table td:nth-child(1) {
+	text-align: left;
+	padding: 7px 10px;
+   }
+   .link { 
+        color: #E73C49;
+   }
+  </style>
+</head>
+
+<body onload="loadDoc(1);"/>
+
+<div>
+<h1>Статус активности пользователей VPN</h1>
+<h3 id="Date">Дата обновления:</h3>
+<button style="visibility:hidden" type="button" onclick="loadDoc()">Обновить</button>
+
+<table id="content" class="table" style='font-weight: bold;'>
+</table>
+</div>
+
+<div id="log">
+<h3 id="h5">Соединение с сервером app1 установлено...</h3>
+</div>
+
+<script>
+var refreshIntervalId;
+function loadDoc(colomn) {
+
+	// Очистка таймера старого интервала
+	clearInterval(refreshIntervalId);
+
+	document.getElementById("h5").innerHTML = "Получение данных с сервера app1...";
+
+	var xhttp = new XMLHttpRequest();
+	xhttp.onreadystatechange = function() {
+
+// Исполнение ajax запроса
+if (this.readyState == 4 && this.status == 200) {
+
+    	var myObj = JSON.parse(this.responseText);
+	document.getElementById("Date").innerHTML = "Дата обновления: " + myObj.Date;
+
+	// Статус загрузки, лог ошибки
+	if (myObj.Log == "")
+		document.getElementById("h5").innerHTML = "Соединение с сервером app1 успешно установлено...";
+	else
+		document.getElementById("h5").innerHTML = "Ошибка: " + myObj.Log;
+	
+	// Подсвечиваем сортировку
+	var link1="", link2="", link3="";
+	if (colomn == 1)
+	  link1="class='link'";
+	if (colomn == 2)
+	  link2="class='link'";
+	if (colomn == 3)
+	  link3="class='link'";
+
+	// Колонки таблицы
+	var string = "<tr>" +
+		"<td width='33%'><a " + link1 + " href='#' onclick='loadDoc(1);return false;'>Пользователь</a></td>" +
+		"<td width='33%'><a " + link2 + " href='#' onclick='loadDoc(2);return false;'>Статус</a></td>" +
+		"<td width='33%'><a " + link3 + " href='#' onclick='loadDoc(3);return false;'>Длительность</a></td>" +
+		"</tr>";
+
+	// Построение таблицы
+    	var arr = myObj.Data;
+	for (i in arr) {
+
+		var status = arr[i].Статус;
+		var statusText = "";
+		var color = "";
+		if (status == "") {
+		  statusText = "Отключен";
+		  color = "##0E0B0B";
+		} else if (status == "Disconnected") {
+		  statusText = "Отключен";
+		  color = "#DF4625";
+		} else if (status == "Went") {
+		  statusText = "Отошел";
+		  color = "#FFC300";
+		} else if (status == "Active") {
+		  statusText = "Активен";
+		  color = "#2AC220";
+		}
+		
+		var user = "";
+		if (arr[i].ФИО == "") {
+		  user = arr[i].Пользователь;
+		} else {
+		  user = arr[i].ФИО + "<br />(" + arr[i].Пользователь + ")";
+		}
+
+		string = string +"<tr><td><div style='font-weight: bold;'>" + user + "</td><td>" +
+				"<div style='color:" + color + ";'>" + statusText + "</div>" +
+				"</td><td>" + 
+				"<div style='color:" + color + ";'>" + arr[i].Длительность + "</div>" +
+				"</td></tr>";
+	};
+	document.getElementById("content").innerHTML = string;
+   }
+ };
+
+	xhttp.open("GET", "http://app1/Service/hs/RSHB_Interchange/Monitor/StatusActivity?colomn=" + colomn, true);
+	xhttp.send();
+	xhttp = null;
+
+	//setTimeout(loadDoc(colomn), 100000);
+	refreshIntervalId = setInterval(function() {loadDoc(colomn)}, 100000)}
+</script>
+
+</body>
+</html>
